@@ -79,7 +79,7 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private ShippingMapper shippingMapper;
 
-    public ServerResponse<Object> createOrder(Integer userId, Integer shippingId) {
+    public ServerResponse createOrder(Integer userId, Integer shippingId) {
 
         //从购物车从获取数据(已勾选
         List<Cart> cartList = cartMapper.selectCheckedCartByUserID(userId);
