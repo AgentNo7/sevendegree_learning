@@ -1,5 +1,6 @@
 package com.sevendegree.service;
 
+import com.sevendegree.common.ServerResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -8,4 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IFileService {
 
     String upload(MultipartFile file, String path);
+
+    ServerResponse<String> uploadSame(MultipartFile file, String path, Integer userId);
+
+    ServerResponse list(Integer userId);
 }

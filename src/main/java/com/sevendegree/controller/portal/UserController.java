@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -184,5 +185,25 @@ public class UserController {
         return iUserService.getInformation(currentUser.getId());
     }
 
+
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "login2.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<User> login2(String username, String password, HttpSession session, HttpServletRequest request) {
+        //service-->mybatis->dao
+        ServerResponse<User> response = iUserService.login(username,password);
+        if(response.isSuccess()){
+            session.setAttribute(Const.CURRENT_USER,response.getData());
+        }
+        request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
+
+        return response;
+    }
 
 }

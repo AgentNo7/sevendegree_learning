@@ -81,6 +81,7 @@
             <columnOverride column="sub_images" jdbcType="VARCHAR" />
         </table>
         <table tableName="sevendegree_user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="sevendegree_file" domainObjectName="File" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 
 
         <!-- geelynote mybatis插件的搭建 -->
