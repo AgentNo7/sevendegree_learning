@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * Created by aqiod on 2017/12/28.
  */
-public interface IProducetService {
+public interface IProductService {
 
     ServerResponse saveOrUpdateProduct(Product product);
 
@@ -21,4 +21,7 @@ public interface IProducetService {
 
     ServerResponse<PageInfo> searchProduct(String productName, Integer productId, int pageNumber, int pageSize);
 
+    ServerResponse<ProductDetailVo> getProductDetail(Integer productId);
+
+    ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNumber, int pageSize, String orderBy);
 }

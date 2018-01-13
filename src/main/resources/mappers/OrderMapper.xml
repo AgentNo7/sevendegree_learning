@@ -29,6 +29,38 @@
     from sevendegree_order
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUserIdAndOrderNo" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sevendegree_order
+    WHERE order_no = #{orderNo}
+    and user_id = #{userId}
+  </select>
+
+  <select id="selectByOrderNo" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sevendegree_order
+    WHERE order_no = #{orderNo}
+  </select>
+
+
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from sevendegree_order
+    where user_id = #{userId}
+    order by create_time desc
+  </select>
+
+  <select id="selectAllOrder" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sevendegree_order
+    order by create_time desc
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sevendegree_order
     where id = #{id,jdbcType=INTEGER}

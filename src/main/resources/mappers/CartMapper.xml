@@ -21,10 +21,56 @@
     from sevendegree_cart
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUserIdAndProductId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sevendegree_cart
+    WHERE user_id = #{userId}
+    and product_id = #{productId}
+  </select>
+
+  <select id="selectCartByUserId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sevendegree_cart
+    WHERE user_id = #{userId}
+  </select>
+
+  <select id="selectCartProductCheckedStatusByUserId" resultType="java.lang.Integer">
+    SELECT count(1)
+    FROM sevenderee_cart
+    WHERE checked = 0
+    AND user_id = #{userId}
+  </select>
+
+  <select id="selectCartProductCount" resultType="java.lang.Integer">
+    SELECT IFNULL(sum(quantity), 0) AS total_quantity
+    FROM sevendegree_cart
+    WHERE user_id = #{userId}
+  </select>
+  <select id="selectCheckedCartByUserID" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sevendegree_cart
+    WHERE user_id = #{userId}
+    and checked = 1
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sevendegree_cart
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+  <delete id="deleteByUserIdAndProductIds">
+    DELETE FROM sevendegree_cart
+    WHERE user_id = #{userId}
+    and product_id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="productIds">
+      #{item}
+    </foreach>
+  </delete>
+
   <insert id="insert" parameterType="com.sevendegree.pojo.Cart" >
     insert into sevendegree_cart (id, user_id, product_id, 
       quantity, checked, create_time, 
@@ -115,5 +161,14 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="checkedOrUnchecked">
+    UPDATE sevendegree_cart
+    set checked = #{checked}, update_time = now()
+    where user_id = #{userId}
+    <if test="productId != null">
+      and product_id = #{productId}
+    </if>
   </update>
 </mapper>

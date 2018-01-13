@@ -27,11 +27,32 @@
     from sevendegree_shipping
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByShippingIdAndUserID" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sevendegree_shipping
+    WHERE id = #{shippingId}
+    and user_id = #{userId}
+  </select>
+
+  <select id="selectByUserID" resultType="com.sevendegree.pojo.Shipping">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sevendegree_shipping
+    WHERE user_id = #{userID}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sevendegree_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.sevendegree.pojo.Shipping" >
+
+  <delete id="deleteByPrimaryKeyAndUserId">
+    delete from sevendegree_shipping
+    where id = #{id,jdbcType=INTEGER}
+    and user_id = #{userId}
+  </delete>
+
+  <insert id="insert" parameterType="com.sevendegree.pojo.Shipping" useGeneratedKeys="true" keyProperty="id">
     insert into sevendegree_shipping (id, user_id, receiver_name, 
       receiver_phone, receiver_mobile, receiver_province, 
       receiver_city, receiver_district, receiver_address, 
@@ -176,4 +197,23 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateByShipping">
+    update sevendegree_shipping
+    set
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+      receiver_city = #{receiverCity,jdbcType=VARCHAR},
+      receiver_district = #{receiverDistrict,jdbcType=VARCHAR},
+      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      receiver_zip = #{receiverZip,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
+    where id = #{id,jdbcType=INTEGER}
+    and user_id = #{userId}
+  </update>
+
+
 </mapper>

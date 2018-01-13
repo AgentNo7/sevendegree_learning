@@ -7,7 +7,7 @@ import com.sevendegree.common.ServerResponse;
 import com.sevendegree.pojo.Product;
 import com.sevendegree.pojo.User;
 import com.sevendegree.service.IFileService;
-import com.sevendegree.service.IProducetService;
+import com.sevendegree.service.IProductService;
 import com.sevendegree.service.IUserService;
 import com.sevendegree.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +34,7 @@ public class ProductManageController {
     private IUserService iUserService;
 
     @Autowired
-    private IProducetService iProducetService;
+    private IProductService iProductService;
 
     @Autowired
     private IFileService iFileService;
@@ -48,7 +48,7 @@ public class ProductManageController {
         }
         if (iUserService.checkAdminRole(user).isSuccess()) {
             //填充增加产品的业务逻辑
-            return iProducetService.saveOrUpdateProduct(product);
+            return iProductService.saveOrUpdateProduct(product);
         }else {
             return ServerResponse.createByErrorMessage("无权限操作");
         }
@@ -63,7 +63,7 @@ public class ProductManageController {
         }
         if (iUserService.checkAdminRole(user).isSuccess()) {
             //修改状态
-            return iProducetService.setSaleStatus(productId, status);
+            return iProductService.setSaleStatus(productId, status);
         }else {
             return ServerResponse.createByErrorMessage("无权限操作");
         }
@@ -78,7 +78,7 @@ public class ProductManageController {
         }
         if (iUserService.checkAdminRole(user).isSuccess()) {
             //填充业务
-            return iProducetService.manageProductDetail(productId);
+            return iProductService.manageProductDetail(productId);
         }else {
             return ServerResponse.createByErrorMessage("无权限操作");
         }
@@ -93,7 +93,7 @@ public class ProductManageController {
         }
         if (iUserService.checkAdminRole(user).isSuccess()) {
             //填充业务
-            return iProducetService.getProductList(pageNumber, pageSize);
+            return iProductService.getProductList(pageNumber, pageSize);
         }else {
             return ServerResponse.createByErrorMessage("无权限操作");
         }
@@ -108,7 +108,7 @@ public class ProductManageController {
         }
         if (iUserService.checkAdminRole(user).isSuccess()) {
             //填充业务
-            return iProducetService.searchProduct(productName, productId, pageNumber, pageSize);
+            return iProductService.searchProduct(productName, productId, pageNumber, pageSize);
         }else {
             return ServerResponse.createByErrorMessage("无权限操作");
         }

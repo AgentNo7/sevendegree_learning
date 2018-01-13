@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Created by aqiod on 2017/12/24.
  */
-@RequestMapping("manage/user")
+@RequestMapping("/manage/user")
 public class UserManageController {
 
     @Autowired
