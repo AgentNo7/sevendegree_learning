@@ -14,6 +14,8 @@
         <input type="submit" value="上传">
     </form>
 
+    <a href="main.jsp">返回main页面</a>
+
 </head>
 <body>
 

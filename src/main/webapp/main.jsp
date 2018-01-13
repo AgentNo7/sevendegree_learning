@@ -15,8 +15,9 @@
                     <td><input type="button" value="下载" onclick="location='' + ${file.url}"></td>
                 </tr>
             </c:forEach>
-        </table>
-        <input type="button" value="查询文件" onclick="location.href='/file/list.do'">
+        </table><br>
+        <input type="button" value="查询文件" onclick="location.href='/file/list.do'">&nbsp&nbsp&nbsp&nbsp
+        <input type="button" value="上传文件" onclick="location.href='upload.jsp'">
 
 
     </p>

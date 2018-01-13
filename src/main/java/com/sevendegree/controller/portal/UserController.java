@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * Created by Administrator on 2017/12/14.
@@ -195,14 +197,17 @@ public class UserController {
      */
     @RequestMapping(value = "login2.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> login2(String username, String password, HttpSession session, HttpServletRequest request) {
+    public ServerResponse<User> login2(String username, String password, HttpSession session, HttpServletResponse response2) {
         //service-->mybatis->dao
         ServerResponse<User> response = iUserService.login(username,password);
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());
         }
-        request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
-
+        try {
+            response2.sendRedirect("/main.jsp");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return response;
     }
 
