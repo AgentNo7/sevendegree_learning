@@ -3,6 +3,8 @@ package com.sevendegree.service.impl;
 import com.google.common.collect.Lists;
 import com.sevendegree.common.ServerResponse;
 import com.sevendegree.dao.FileMapper;
+import com.sevendegree.dao.UserMapper;
+import com.sevendegree.pojo.User;
 import com.sevendegree.service.IFileService;
 import com.sevendegree.util.FTPUtil;
 import com.sevendegree.util.PropertiesUtil;
@@ -26,6 +28,9 @@ public class FileServiceImpl implements IFileService {
 
     @Autowired
     private FileMapper fileMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
@@ -64,6 +69,11 @@ public class FileServiceImpl implements IFileService {
         String fileName = file.getOriginalFilename();
         logger.info("开始上传文件，上传的文件名：{}，上传的路径：{}，新文件名：{}", fileName, path, fileName);
 
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+
         File fileDir = new File(path);
         if (!fileDir.exists()) {
             fileDir.setWritable(true);
@@ -78,7 +88,7 @@ public class FileServiceImpl implements IFileService {
             fileInsert.setUserId(userId);
             fileInsert.setFileName(fileName);
             fileInsert.setDesc(fileName + "的描述");
-            fileInsert.setUrl(PropertiesUtil.getProperty("storage.prefix") + targetFile.getName());
+            fileInsert.setUrl(PropertiesUtil.getProperty("storage.prefix") + user.getUsername() + "/" + targetFile.getName());
             int rowCount = fileMapper.insert(fileInsert);
             if (rowCount == 0) {
                 return ServerResponse.createByErrorMessage("新建数据失败");
