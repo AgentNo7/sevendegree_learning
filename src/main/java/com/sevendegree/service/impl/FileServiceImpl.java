@@ -77,6 +77,7 @@ public class FileServiceImpl implements IFileService {
             com.sevendegree.pojo.File fileInsert = new com.sevendegree.pojo.File();
             fileInsert.setUserId(userId);
             fileInsert.setFileName(fileName);
+            fileInsert.setDesc(fileName + "的描述");
             fileInsert.setUrl(PropertiesUtil.getProperty("storage.prefix") + targetFile.getName());
             int rowCount = fileMapper.insert(fileInsert);
             if (rowCount == 0) {
@@ -86,7 +87,7 @@ public class FileServiceImpl implements IFileService {
 //            boolean success = FTPUtil.uploadFile(Lists.newArrayList(targetFile));
 //            System.out.println("上传" + (success ? "成功" : "失败") );
             //删除服务器端文件
-            targetFile.delete();
+            //targetFile.delete();
         } catch (IOException e) {
             logger.error("上传文件异常", e);
             return null;

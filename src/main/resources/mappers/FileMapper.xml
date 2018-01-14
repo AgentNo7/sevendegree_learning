@@ -13,7 +13,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, file_name, user_id, url, desc, create_time, update_time
+    id, file_name, user_id, url, `desc`, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -34,7 +34,7 @@
   </delete>
   <insert id="insert" parameterType="com.sevendegree.pojo.File" >
     insert into sevendegree_file (id, file_name, user_id, 
-      url, desc, create_time, 
+      url, `desc`, create_time,
       update_time)
     values (#{id,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
       #{url,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},now(),
@@ -56,13 +56,13 @@
         url,
       </if>
       <if test="desc != null" >
-        desc,
+        `desc`,
       </if>
       <if test="createTime != null" >
         create_time,
       </if>
       <if test="updateTime != null" >
-        update_time,
+        update_time,,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -102,10 +102,7 @@
         url = #{url,jdbcType=VARCHAR},
       </if>
       <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        `desc` = #{desc,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null" >
         update_time = now(),
@@ -118,8 +115,7 @@
     set file_name = #{fileName,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
       url = #{url,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `desc` = #{desc,jdbcType=VARCHAR},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>

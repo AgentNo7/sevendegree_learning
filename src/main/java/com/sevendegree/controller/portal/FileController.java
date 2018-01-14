@@ -39,7 +39,10 @@ public class FileController {
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
-        String path = PropertiesUtil.getProperty("storage.dir") + user.getUsername();//request.getSession().getServletContext().getRealPath("/upload");
+        if (file == null) {
+            return ServerResponse.createByErrorMessage("没有选择文件");
+        }
+        String path = PropertiesUtil.getProperty("storage.dir", "") + user.getUsername();//request.getSession().getServletContext().getRealPath("/upload");
         ServerResponse<String> serverResponse = iFileService.uploadSame(file, path, user.getId());
         if (!serverResponse.isSuccess()) {
             return serverResponse;
@@ -54,7 +57,7 @@ public class FileController {
 
     @RequestMapping("list.do")
     @ResponseBody
-    public ServerResponse list(HttpSession session) {
+    public ServerResponse list(HttpSession session, HttpServletRequest request) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
@@ -64,6 +67,7 @@ public class FileController {
             session.setAttribute("fileList", null);
         }
         session.setAttribute("fileList", serverResponse.getData());
+        request.getRequestDispatcher("main.jsp");
         return serverResponse;
     }
 }

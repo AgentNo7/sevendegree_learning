@@ -12,7 +12,7 @@
             <c:forEach items="${fileList}" var="file">
                 <tr>
                     <td>${file.fileName}</td>
-                    <td><input type="button" value="下载" onclick="location='' + ${file.url}"></td>
+                    <td><a href="${file.url}">下载</a> </td>
                 </tr>
             </c:forEach>
         </table><br>
