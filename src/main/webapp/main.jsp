@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8"  %>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8"  %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -9,7 +9,8 @@
                 <td>文件名</td>
                 <td>下载</td>
             </tr>
-            <c:if test="${fileList}!=null" >
+            <!-- c:if helps resolve null problems -->
+            <c:if test="${fileList}!=null">
             <c:forEach items="${fileList}" var="file">
                 <tr>
                     <td>${file.filename}</td>
