@@ -68,7 +68,8 @@ public class FileController {
         if (serverResponse.getData().equals("用户暂无文件")) {
             session.setAttribute("fileList", null);
         }
-        session.setAttribute("fileList", serverResponse.getData());
+        else
+            session.setAttribute("fileList", serverResponse.getData());
         try {
             response.sendRedirect("/main.jsp");
         } catch (IOException e) {

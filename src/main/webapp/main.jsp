@@ -10,14 +10,12 @@
                 <td>下载</td>
             </tr>
             <!-- c:if helps resolve null problems -->
-            <c:if test="${fileList}!=null">
             <c:forEach items="${fileList}" var="file">
                 <tr>
-                    <td>${file.filename}</td>
+                    <td>${file.fileName}</td>
                     <td><a href="${file.url}">下载</a> </td>
                 </tr>
             </c:forEach>
-            </c:if>
         </table><br>
         <input type="button" value="查询文件" onclick="location.href='/file/list.do'">&nbsp&nbsp&nbsp&nbsp
         <input type="button" value="上传文件" onclick="location.href='upload.jsp'">
