@@ -44,7 +44,7 @@ public class CookieUtil {
         Cookie[] cookies = request.getCookies();
         if (cookies != null){
             for (Cookie cookie : cookies) {
-                if (StringUtils.equals(cookie.getName(), cookie.getValue())) {
+                if (StringUtils.equals(cookie.getName(), COOKIE_MAME)) {
                     cookie.setDomain(COOKIE_DOMAIN);
                     cookie.setPath("/");
                     cookie.setMaxAge(0);// set 0 , means delete
