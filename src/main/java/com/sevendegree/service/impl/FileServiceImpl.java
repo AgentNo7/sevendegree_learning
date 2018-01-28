@@ -8,6 +8,7 @@ import com.sevendegree.pojo.User;
 import com.sevendegree.service.IFileService;
 import com.sevendegree.util.FTPUtil;
 import com.sevendegree.util.PropertiesUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import java.util.UUID;
  * Created by aqiod on 2017/12/29.
  */
 @Service("iFileService")
+@Slf4j
 public class FileServiceImpl implements IFileService {
 
     @Autowired
@@ -32,14 +34,14 @@ public class FileServiceImpl implements IFileService {
     @Autowired
     private UserMapper userMapper;
 
-    private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+//    private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
     public String upload(MultipartFile file, String path) {
         String fileName = file.getOriginalFilename();
         //获取扩展名
         String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
         String uploadFileName = UUID.randomUUID().toString() + "." + fileExtensionName;
-        logger.info("开始上传文件，上传的文件名：{}，上传的路径：{}，新文件名：{}", fileName, path, uploadFileName);
+        log.info("开始上传文件，上传的文件名：{}，上传的路径：{}，新文件名：{}", fileName, path, uploadFileName);
 
         File fileDir = new File(path);
         if (!fileDir.exists()) {
@@ -58,7 +60,7 @@ public class FileServiceImpl implements IFileService {
             //删除服务器端文件
             targetFile.delete();
         } catch (IOException e) {
-            logger.error("上传文件异常", e);
+            log.error("上传文件异常", e);
             return null;
         }
 
@@ -66,8 +68,9 @@ public class FileServiceImpl implements IFileService {
     }
 
     public ServerResponse<String> uploadSame(MultipartFile file, String path, Integer userId) {
+        System.out.println("uploadSame method");
         String fileName = file.getOriginalFilename();
-        logger.info("开始上传文件，上传的文件名：{}，上传的路径：{}，新文件名：{}", fileName, path, fileName);
+        log.info("开始上传文件，上传的文件名：{}，上传的路径：{}，新文件名：{}", fileName, path, fileName);
 
         User user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -80,7 +83,7 @@ public class FileServiceImpl implements IFileService {
             fileDir.mkdirs();
         }
         File targetFile = new File(path, fileName);
-
+        System.out.println("upload start");
         try {
             //文件上传成功
             file.transferTo(targetFile);
@@ -99,7 +102,7 @@ public class FileServiceImpl implements IFileService {
             //删除服务器端文件
             //targetFile.delete();
         } catch (IOException e) {
-            logger.error("上传文件异常", e);
+            log.error("上传文件异常", e);
             return null;
         }
 

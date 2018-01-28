@@ -37,7 +37,9 @@ public class FileController {
     @RequestMapping("upload.do")
     @ResponseBody
     public ServerResponse upload(HttpSession session, @RequestParam(value = "upload_file", required = false) MultipartFile file, HttpServletRequest request) {
+        System.out.println("upload Controller method start");
         User user = (User) session.getAttribute(Const.CURRENT_USER);
+
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
@@ -45,6 +47,7 @@ public class FileController {
             return ServerResponse.createByErrorMessage("没有选择文件");
         }
         String path = PropertiesUtil.getProperty("storage.dir", "") + user.getUsername();//request.getSession().getServletContext().getRealPath("/upload");
+        System.out.println("impl start");
         ServerResponse<String> serverResponse = iFileService.uploadSame(file, path, user.getId());
         if (!serverResponse.isSuccess()) {
             return serverResponse;

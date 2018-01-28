@@ -6,6 +6,7 @@ import com.sevendegree.common.ServerResponse;
 import com.sevendegree.dao.CategoryMapper;
 import com.sevendegree.pojo.Category;
 import com.sevendegree.service.ICategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,12 +23,13 @@ import java.util.Set;
  * Created by aqiod on 2017/12/26.
  */
 @Service("iCategoryService")
+@Slf4j
 public class CategoryServiceImpl implements ICategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
 
-    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+//    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     public ServerResponse addCategory(String categoryName, Integer parentId){
         if(parentId == null || StringUtils.isBlank(categoryName)){
@@ -65,7 +67,7 @@ public class CategoryServiceImpl implements ICategoryService {
     public ServerResponse<List<Category>> getChildParallelCategory(Integer categoryId){
         List<Category> categoryList = categoryMapper.selectCategoryChildByParentId(categoryId);
         if(CollectionUtils.isEmpty(categoryList)){
-            logger.info("未找到当前分类的子分类");
+            log.info("未找到当前分类的子分类");
         }
         return ServerResponse.createBySuccess(categoryList);
     }
