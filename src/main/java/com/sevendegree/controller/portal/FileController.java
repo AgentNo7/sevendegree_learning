@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.sevendegree.common.Const;
 import com.sevendegree.common.ResponseCode;
 import com.sevendegree.common.ServerResponse;
+import com.sevendegree.controller.common.UserUtil;
 import com.sevendegree.pojo.User;
 import com.sevendegree.service.IFileService;
 import com.sevendegree.service.IUserService;
@@ -36,9 +37,9 @@ public class FileController {
 
     @RequestMapping("upload.do")
     @ResponseBody
-    public ServerResponse upload(HttpSession session, @RequestParam(value = "upload_file", required = false) MultipartFile file, HttpServletRequest request) {
+    public ServerResponse upload(@RequestParam(value = "upload_file", required = false) MultipartFile file, HttpServletRequest request) {
         System.out.println("upload Controller method start");
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = UserUtil.checkUserStatus(request);
 
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
@@ -62,8 +63,8 @@ public class FileController {
 
     @RequestMapping("list.do")
     @ResponseBody
-    public ServerResponse list(HttpSession session, HttpServletResponse response) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse list(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
+        User user = UserUtil.checkUserStatus(request);//(User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
