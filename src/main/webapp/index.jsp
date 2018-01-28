@@ -2,7 +2,6 @@
 <html>
 <body>
 <p align="center">
-<h1>Tomcat2!!!!!</h1>
 <h2>登录页面</h2>
 <form name="login" action="/user/login.do" method="post">
     用户名：<input type="text" name="username" > <br>

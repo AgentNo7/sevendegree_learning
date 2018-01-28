@@ -24,7 +24,7 @@ public class SessionExpireFilter implements Filter {
         //如果loginToken不为空，继续拿信息
         if (StringUtils.isNotEmpty(loginToken)) {
             String userJson = RedisUtil.get(loginToken);
-            User user = JsonUtil.stringToObj(loginToken, User.class);
+            User user = JsonUtil.stringToObj(userJson, User.class);
             if (user != null) {
                 //调用expire命令
                 RedisUtil.expire(loginToken, Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
