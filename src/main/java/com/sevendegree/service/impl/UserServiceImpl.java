@@ -2,11 +2,11 @@ package com.sevendegree.service.impl;
 
 import com.sevendegree.common.Const;
 import com.sevendegree.common.ServerResponse;
-import com.sevendegree.common.TokenCache;
 import com.sevendegree.dao.UserMapper;
 import com.sevendegree.pojo.User;
 import com.sevendegree.service.IUserService;
 import com.sevendegree.util.MD5Util;
+import com.sevendegree.util.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,7 +107,8 @@ public class UserServiceImpl implements IUserService{
         if(resultCount > 0){
             //说明问题和问题答案是该用户的，并且正确
             String forgetToken = UUID.randomUUID().toString();
-            TokenCache.setKey("token_" + username, forgetToken);
+            //TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, forgetToken);
+            RedisUtil.setEx(Const.TOKEN_PREFIX + username, forgetToken, 60 * 60 * 12);
             return ServerResponse.createBySuccess(forgetToken);
         }
         return ServerResponse.createByErrorMessage("问题的答案错误");
@@ -124,7 +125,8 @@ public class UserServiceImpl implements IUserService{
             return ServerResponse.createByErrorMessage("用户不存在");
         }
 
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        //String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        String token = RedisUtil.get(Const.TOKEN_PREFIX + username);
         if(StringUtils.isBlank(token)){
             return ServerResponse.createByErrorMessage("token无效或者过期");
         }
