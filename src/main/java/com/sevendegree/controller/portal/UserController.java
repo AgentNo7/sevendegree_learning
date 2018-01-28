@@ -164,13 +164,12 @@ public class UserController {
 
     /**
      * 更新用户信息
-     * @param session
      * @param user
      * @return
      */
     @RequestMapping(value = "update_information.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> updateInformation(HttpSession session, HttpServletRequest request, User user){
+    public ServerResponse<User> updateInformation(HttpServletRequest request, User user){
         User currentUser = UserUtil.checkUserStatus(request);
         if(currentUser == null){
             return ServerResponse.createByErrorMessage("用户未登录");
@@ -180,7 +179,8 @@ public class UserController {
 
         ServerResponse<User> response =  iUserService.updateInformation(user);
         if(response.isSuccess()){
-            session.setAttribute(Const.CURRENT_USER, response.getData());
+            //session.setAttribute(Const.CURRENT_USER, response.getData());
+            RedisUtil.setEx(CookieUtil.readLoginToken(request), JsonUtil.objToString(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
         }
 
         return response;
@@ -188,7 +188,6 @@ public class UserController {
 
     /**
      * 查询用户信息
-     * @return
      */
     @RequestMapping(value = "get_information.do",method = RequestMethod.POST)
     @ResponseBody
