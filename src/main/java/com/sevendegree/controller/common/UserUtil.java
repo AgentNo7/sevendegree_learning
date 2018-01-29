@@ -3,7 +3,7 @@ package com.sevendegree.controller.common;
 import com.sevendegree.pojo.User;
 import com.sevendegree.util.CookieUtil;
 import com.sevendegree.util.JsonUtil;
-import com.sevendegree.util.RedisUtil;
+import com.sevendegree.util.RedisShardedUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +15,6 @@ public class UserUtil {
         if (StringUtils.isEmpty(loginToken)) {
             return null;
         }
-        return JsonUtil.stringToObj(RedisUtil.get(loginToken), User.class);
+        return JsonUtil.stringToObj(RedisShardedUtil.get(loginToken), User.class);
     }
 }

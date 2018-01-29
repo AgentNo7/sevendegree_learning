@@ -8,7 +8,7 @@ import com.sevendegree.pojo.User;
 import com.sevendegree.service.IUserService;
 import com.sevendegree.util.CookieUtil;
 import com.sevendegree.util.JsonUtil;
-import com.sevendegree.util.RedisUtil;
+import com.sevendegree.util.RedisShardedUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,7 +47,7 @@ public class UserController {
         if(response.isSuccess()){
 //            session.setAttribute(Const.CURRENT_USER,response.getData());
             CookieUtil.writeLoginToken(httpServletResponse, session.getId());
-            RedisUtil.setEx(session.getId(), JsonUtil.objToString(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
+            RedisShardedUtil.setEx(session.getId(), JsonUtil.objToString(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
          }
         return response;
     }
@@ -61,7 +61,7 @@ public class UserController {
     public ServerResponse<User> logout(HttpServletRequest request, HttpServletResponse response) {
 //        session.removeAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(request);
-        RedisUtil.del(loginToken);
+        RedisShardedUtil.del(loginToken);
         CookieUtil.deleteLoginToken(request, response);
         return ServerResponse.createBySuccess();
     }
@@ -180,7 +180,7 @@ public class UserController {
         ServerResponse<User> response =  iUserService.updateInformation(user);
         if(response.isSuccess()){
             //session.setAttribute(Const.CURRENT_USER, response.getData());
-            RedisUtil.setEx(CookieUtil.readLoginToken(request), JsonUtil.objToString(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
+            RedisShardedUtil.setEx(CookieUtil.readLoginToken(request), JsonUtil.objToString(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
         }
 
         return response;

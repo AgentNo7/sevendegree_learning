@@ -1,7 +1,5 @@
 package com.sevendegree.util;
 
-import com.google.common.collect.Lists;
-import com.sevendegree.pojo.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -13,7 +11,6 @@ import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 @Slf4j
 public class JsonUtil {

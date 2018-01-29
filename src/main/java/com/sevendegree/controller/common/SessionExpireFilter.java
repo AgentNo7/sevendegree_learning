@@ -4,7 +4,7 @@ import com.sevendegree.common.Const;
 import com.sevendegree.pojo.User;
 import com.sevendegree.util.CookieUtil;
 import com.sevendegree.util.JsonUtil;
-import com.sevendegree.util.RedisUtil;
+import com.sevendegree.util.RedisShardedUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
@@ -23,11 +23,11 @@ public class SessionExpireFilter implements Filter {
         String loginToken = CookieUtil.readLoginToken(request);
         //如果loginToken不为空，继续拿信息
         if (StringUtils.isNotEmpty(loginToken)) {
-            String userJson = RedisUtil.get(loginToken);
+            String userJson = RedisShardedUtil.get(loginToken);
             User user = JsonUtil.stringToObj(userJson, User.class);
             if (user != null) {
                 //调用expire命令
-                RedisUtil.expire(loginToken, Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
+                RedisShardedUtil.expire(loginToken, Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);
