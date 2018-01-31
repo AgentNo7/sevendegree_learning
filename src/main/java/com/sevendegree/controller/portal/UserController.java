@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -58,11 +57,11 @@ public class UserController {
      */
     @RequestMapping(value = "logout.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> logout(HttpServletRequest request, HttpServletResponse response) {
-//        session.removeAttribute(Const.CURRENT_USER);
-        String loginToken = CookieUtil.readLoginToken(request);
-        RedisShardedUtil.del(loginToken);
-        CookieUtil.deleteLoginToken(request, response);
+    public ServerResponse<User> logout(HttpSession session, HttpServletResponse response) {
+        session.removeAttribute(Const.CURRENT_USER);
+//        String loginToken = CookieUtil.readLoginToken(request);
+//        RedisShardedUtil.del(loginToken);
+//        CookieUtil.deleteLoginToken(request, response);
         return ServerResponse.createBySuccess();
     }
 
@@ -95,14 +94,14 @@ public class UserController {
      */
     @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> getUserInfo(HttpServletRequest request){
+    public ServerResponse<User> getUserInfo(HttpSession session){
 //        String loginToken = CookieUtil.readLoginToken(request);
 //        if (StringUtils.isEmpty(loginToken)) {
 //            return ServerResponse.createByErrorMessage("用户未登录，无法获取当前用户登录信息");
 //        }
-        User user = UserUtil.checkUserStatus(request);
+//        User user = UserUtil.checkUserStatus(request);
 
-        //User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user != null){
             return ServerResponse.createBySuccess(user);
         }

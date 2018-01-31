@@ -68,16 +68,16 @@ public class RedisShardedPool {
         pool.returnResource(jedis);
     }
 
-    public static void main(String[] args) {
-        ShardedJedis jedis = pool.getResource();
-
-        for (int i=0;i<10;i++) {
-            jedis.set("key" + i, "value" + i);
-        }
-//        pool.returnResource(jedis);
-        // jedis.set("test", "TwiceTest");
-        returnResource(jedis);
-//        pool.destroy();//临时调用
-        System.out.println("end");
-    }
+//    public static void main(String[] args) {
+//        ShardedJedis jedis = pool.getResource();
+//
+//        for (int i=0;i<10;i++) {
+//            jedis.set("key" + i, "value" + i);
+//        }
+////        pool.returnResource(jedis);
+//        // jedis.set("test", "TwiceTest");
+//        returnResource(jedis);
+////        pool.destroy();//临时调用
+//        System.out.println("end");
+//    }
 }
