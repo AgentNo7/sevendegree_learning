@@ -42,12 +42,12 @@ public class RedisShardedPool {
 
         JedisShardInfo info = new JedisShardInfo(redisIp, redisPort, 60 * 2);
 //        info.setPassword(); if you seted password
-        JedisShardInfo info2 = new JedisShardInfo(redisIp2, redisPort2, 60 * 2);
+        //JedisShardInfo info2 = new JedisShardInfo(redisIp2, redisPort2, 60 * 2);
 
         List<JedisShardInfo> jedisShardInfos = new ArrayList<>(2);
 
         jedisShardInfos.add(info);
-        jedisShardInfos.add(info2);
+        //jedisShardInfos.add(info2);
 
         pool = new ShardedJedisPool(config, jedisShardInfos, Hashing.MURMUR_HASH); //MURMUR_HASH corresponding to CONSISTENT HASH
     }

@@ -38,10 +38,11 @@ public class UserSpringSessionController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "login.do", method = RequestMethod.POST)
+    @RequestMapping(value = "login.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session) {
-        //service-->mybatis->dao
+        //测试全局异常
+//        int i=0,j=10/i;
         ServerResponse<User> response = iUserService.login(username, password);
         if (response.isSuccess()) {
            session.setAttribute(Const.CURRENT_USER,response.getData());

@@ -38,4 +38,8 @@ public interface IOrderService {
     ServerResponse aliCallback(Map<String, String> params);
 
     ServerResponse queryOrderPayStatus(Integer userId, Long orderNo);
+
+    //close order
+    //hour小时内未付款的订单。进行关闭
+    void closeOrder(int hour);
 }

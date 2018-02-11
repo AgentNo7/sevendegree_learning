@@ -61,7 +61,17 @@
     order by create_time desc
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectOrderStatusByCreateTime" resultMap="BaseResultMap">
+      SELECT <include refid="Base_Column_List"/>
+      from sevendegree_order
+      where status = #{status}
+      <![CDATA[
+      and create_time <= #{date}
+      ]]>
+      order by create_time desc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sevendegree_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -230,4 +240,11 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="closeOrderByOrderId">
+    UPDATE sevendegree_order
+    SET status = 0
+    WHERE id = #{id}
+  </update>
+
 </mapper>
