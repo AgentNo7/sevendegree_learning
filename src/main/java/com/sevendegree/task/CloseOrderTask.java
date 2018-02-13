@@ -1,16 +1,19 @@
 package com.sevendegree.task;
 
 import com.sevendegree.common.Const;
+import com.sevendegree.common.RedissonManager;
 import com.sevendegree.service.IOrderService;
 import com.sevendegree.util.PropertiesUtil;
 import com.sevendegree.util.RedisShardedUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -18,6 +21,9 @@ public class CloseOrderTask {
 
     @Autowired
     private IOrderService iOrderService;
+
+    @Autowired
+    private RedissonManager redissonManager;
 
     @PreDestroy
     public void delLock() {
@@ -46,7 +52,7 @@ public class CloseOrderTask {
         log.info("关闭订单定时任务结束");
     }
 
-    @Scheduled(cron = "0 */1 * * * ?")//每个一分钟的整数倍
+//    @Scheduled(cron = "0 */1 * * * ?")//每个一分钟的整数倍
     public void closeOrderTaskV3() {
         log.info("关闭订单定时任务开始");
         long lockTimeOut = Long.parseLong(PropertiesUtil.getProperty("lock.timeout", "5000"));
@@ -77,6 +83,30 @@ public class CloseOrderTask {
         log.info("关闭订单定时任务结束");
     }
 
+    @Scheduled(cron = "0 */1 * * * ?")
+    public void closeOrderTaskV4() {
+        RLock lock = redissonManager.getRedisson().getLock(Const.REDIS_LOCK.CLOSE_ORDER_TASK_LOCK);
+        boolean getlock = false;
+        try {
+            getlock = lock.tryLock(2, 5, TimeUnit.SECONDS);
+            if (getlock) {
+                log.info("Redisson获取到分布式锁：{}，ThreadName：{}", Const.REDIS_LOCK.CLOSE_ORDER_TASK_LOCK, Thread.currentThread().getName());
+                int hour = Integer.parseInt(PropertiesUtil.getProperty("close.order.task.hour", "2"));
+//                iOrderService.closeOrder(hour);
+            } else {
+                log.info("Redisson没有获取到分布式锁：{}，ThreadName：{}", Const.REDIS_LOCK.CLOSE_ORDER_TASK_LOCK, Thread.currentThread().getName());
+            }
+        } catch (InterruptedException e) {
+            log.error("redisson分布式锁获取异常",e);
+        } finally {
+            if (!getlock) {
+                return;
+            }
+            lock.unlock();
+            log.info("Reidsson分布式锁释放锁");
+        }
+    }
+
     private void closeOrderAndExpireLock() {
         RedisShardedUtil.expire(Const.REDIS_LOCK.CLOSE_ORDER_TASK_LOCK, 5);//有效期5秒防止死锁
         log.info("获取{}ThreadName:{}", Const.REDIS_LOCK.CLOSE_ORDER_TASK_LOCK, Thread.currentThread().getName());
@@ -86,6 +116,5 @@ public class CloseOrderTask {
         log.info("释放{}ThreadName:{}", Const.REDIS_LOCK.CLOSE_ORDER_TASK_LOCK, Thread.currentThread().getName());
         log.info("========================================");
     }
-
 
 }
