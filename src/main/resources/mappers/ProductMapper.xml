@@ -65,7 +65,7 @@
     <select id="selectStockByproductId" resultType="java.lang.Integer">
       SELECT stock
       FROM sevendegree_product
-      WHEN id = #{id};
+      WHERE id = #{id};
       for update
     </select>
 
