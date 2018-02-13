@@ -29,7 +29,7 @@ public class AuthorityInterceptor implements HandlerInterceptor{
         HandlerMethod handlerMethod = (HandlerMethod) o;
         //解析HandlerMethod
         String methodName = handlerMethod.getMethod().getName();
-        String className = handlerMethod.getMethod().getClass().getSimpleName();
+        String className = handlerMethod.getBean().getClass().getSimpleName();
 
         //解析参数，具体的key和value是什么，打印日志
         StringBuffer requestParamBuffer = new StringBuffer();
