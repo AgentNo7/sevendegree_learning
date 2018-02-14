@@ -48,7 +48,8 @@ public class AuthorityInterceptor implements HandlerInterceptor{
             requestParamBuffer.append(mapKey).append("=").append(mapValue);
         }
 
-        if ( (StringUtils.equals(className, "UserManageController") || StringUtils.equals(className, "UserController") ) && StringUtils.equals(methodName, "login")) {
+        if ( (StringUtils.equals(className, "UserManageController") || StringUtils.equals(className, "UserController") )
+                && ( StringUtils.equals(methodName, "login")  ||  StringUtils.equals(methodName, "login2")) ) {
             log.info("拦截器拦截到请求，className:{},methodName:{}", className, methodName);
             //如果拦截到登录不打印参数信息，因为不安全
             return true;

@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class CookieUtil {
 
-    private static final String COOKIE_DOMAIN = ".test.com";
+    private static final String COOKIE_DOMAIN = ".sevendegree.date";
     private static final String COOKIE_MAME = "sevendegree_login_token";
 
     public static void writeLoginToken(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie(COOKIE_MAME, token);
         cookie.setDomain(COOKIE_DOMAIN);
-        cookie.setPath("/");//代表早根目录下的代码能够获取到cookie
+        cookie.setPath("/");//代表根目录下的代码能够获取到cookie
         cookie.setHttpOnly(true);
         //单位是秒，-1表示永久
         //如果这个maxage不设置的话，cookie就不会写入硬盘，而是写在内存。只在当前页面有效

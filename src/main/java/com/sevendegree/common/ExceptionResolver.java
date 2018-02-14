@@ -20,7 +20,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         //当使用jackson2.x的时候使用MappingJaskson2JsonView,项目中使用1.9.12
         modelAndView.addObject("status", ResponseCode.ERROR.getCode());
         modelAndView.addObject("mag", "接口异常，详情查看服务端日志信息");
-        modelAndView.addObject("data", e.toString());
+//        modelAndView.addObject("data", e.toString());
         return modelAndView;
     }
 }

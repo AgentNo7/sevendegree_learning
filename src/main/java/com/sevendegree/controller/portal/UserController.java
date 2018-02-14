@@ -208,14 +208,16 @@ public class UserController {
      */
     @RequestMapping(value = "login2.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> login2(String username, String password, HttpSession session, HttpServletResponse response2) {
+    public ServerResponse<User> login2(String username, String password, HttpSession session, HttpServletResponse httpServletResponse) {
         //service-->mybatis->dao
         ServerResponse<User> response = iUserService.login(username,password);
         if(response.isSuccess()){
-            session.setAttribute(Const.CURRENT_USER,response.getData());
+//            session.setAttribute(Const.CURRENT_USER,response.getData());
+            CookieUtil.writeLoginToken(httpServletResponse, session.getId());
+            RedisShardedUtil.setEx(session.getId(), JsonUtil.objToString(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
         }
         try {
-            response2.sendRedirect("/main.jsp");
+            httpServletResponse.sendRedirect("/main.jsp");
         } catch (IOException e) {
             e.printStackTrace();
         }
