@@ -215,11 +215,11 @@ public class UserController {
 //            session.setAttribute(Const.CURRENT_USER,response.getData());
             CookieUtil.writeLoginToken(httpServletResponse, session.getId());
             RedisShardedUtil.setEx(session.getId(), JsonUtil.objToString(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
-        }
-        try {
-            httpServletResponse.sendRedirect("/main.jsp");
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                httpServletResponse.sendRedirect("/main.jsp");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return response;
     }
