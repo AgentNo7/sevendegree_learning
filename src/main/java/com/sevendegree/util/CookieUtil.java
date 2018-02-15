@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class CookieUtil {
 
-    private static final String COOKIE_DOMAIN = ".sevendegree.date";
+//    private static final String COOKIE_DOMAIN = ".sevendegree.date";
+    private static final String COOKIE_DOMAIN = ".sevendegree.club";
     private static final String COOKIE_MAME = "sevendegree_login_token";
 
     public static void writeLoginToken(HttpServletResponse response, String token) {
