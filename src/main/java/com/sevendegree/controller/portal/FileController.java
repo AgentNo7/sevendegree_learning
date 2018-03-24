@@ -37,20 +37,20 @@ public class FileController {
     @RequestMapping("upload.do")
     @ResponseBody
     public ServerResponse upload(HttpSession session, @RequestParam(value = "upload_file", required = false) MultipartFile file, HttpServletRequest request) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
-        }
+//        User user = (User) session.getAttribute(Const.CURRENT_USER);
+//        if (user == null) {
+//            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
+//        }
         if (file == null || file.isEmpty()) {
             return ServerResponse.createByErrorMessage("没有选择文件");
         }
-        String path = PropertiesUtil.getProperty("storage.dir", "") + user.getUsername();//request.getSession().getServletContext().getRealPath("/upload");
-        ServerResponse<String> serverResponse = iFileService.uploadSame(file, path, user.getId());
+        String path = PropertiesUtil.getProperty("storage.dir", "") ;//+ user.getUsername();//request.getSession().getServletContext().getRealPath("/upload");
+        ServerResponse<String> serverResponse = iFileService.uploadSame(file, path);//, user.getId());
         if (!serverResponse.isSuccess()) {
             return serverResponse;
         }
         String targetFileName = serverResponse.getData();
-         String url = PropertiesUtil.getProperty("storage.prefix") + user.getUsername() + "/" + targetFileName;
+         String url = PropertiesUtil.getProperty("storage.prefix") /*+ user.getUsername() + "/"*/ + targetFileName;
         Map fileMap = Maps.newHashMap();
         fileMap.put("uri", targetFileName);
         fileMap.put("url", url);

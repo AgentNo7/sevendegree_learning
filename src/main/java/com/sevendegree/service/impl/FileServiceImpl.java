@@ -65,14 +65,14 @@ public class FileServiceImpl implements IFileService {
         return targetFile.getName();
     }
 
-    public ServerResponse<String> uploadSame(MultipartFile file, String path, Integer userId) {
+    public ServerResponse<String> uploadSame(MultipartFile file, String path){//, Integer userId) {
         String fileName = file.getOriginalFilename();
         logger.info("开始上传文件，上传的文件名：{}，上传的路径：{}，新文件名：{}", fileName, path, fileName);
 
-        User user = userMapper.selectByPrimaryKey(userId);
-        if (user == null) {
-            return ServerResponse.createByErrorMessage("用户不存在");
-        }
+//        User user = userMapper.selectByPrimaryKey(userId);
+//        if (user == null) {
+//            return ServerResponse.createByErrorMessage("用户不存在");
+//        }
 
         File fileDir = new File(path);
         if (!fileDir.exists()) {
@@ -80,15 +80,19 @@ public class FileServiceImpl implements IFileService {
             fileDir.mkdirs();
         }
         File targetFile = new File(path, fileName);
-
+        System.out.println(targetFile.getAbsolutePath());
+        System.out.println(targetFile.getName());
         try {
             //文件上传成功
             file.transferTo(targetFile);
             com.sevendegree.pojo.File fileInsert = new com.sevendegree.pojo.File();
-            fileInsert.setUserId(userId);
+            fileInsert.setUserId(14011);
             fileInsert.setFileName(fileName);
             fileInsert.setDesc(fileName + "的描述");
-            fileInsert.setUrl(PropertiesUtil.getProperty("storage.prefix") + user.getUsername() + "/" + targetFile.getName());
+            fileInsert.setUrl(PropertiesUtil.getProperty("storage.prefix")/* + user.getUsername() + "/"*/ + targetFile.getName());
+            System.out.println(PropertiesUtil.getProperty("storage.prefix"));
+            System.out.println(targetFile.getName());
+            System.out.println(fileInsert.getUrl());
             int rowCount = fileMapper.insert(fileInsert);
             if (rowCount == 0) {
                 return ServerResponse.createByErrorMessage("新建数据失败");

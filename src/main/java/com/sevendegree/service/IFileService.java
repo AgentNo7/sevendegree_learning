@@ -10,7 +10,7 @@ public interface IFileService {
 
     String upload(MultipartFile file, String path);
 
-    ServerResponse<String> uploadSame(MultipartFile file, String path, Integer userId);
+    ServerResponse<String> uploadSame(MultipartFile file, String path);//, Integer userId);
 
     ServerResponse list(Integer userId);
 }
