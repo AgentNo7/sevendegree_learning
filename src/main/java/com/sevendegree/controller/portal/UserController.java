@@ -33,7 +33,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "login.do",method = RequestMethod.POST)
+    @RequestMapping(value = "login.do")
     @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session) {
         //service-->mybatis->dao
@@ -49,7 +49,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "logout.do",method = RequestMethod.POST)
+    @RequestMapping(value = "logout.do")
     @ResponseBody
     public ServerResponse<User> logout(HttpSession session) {
         session.removeAttribute(Const.CURRENT_USER);
@@ -61,7 +61,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "register.do",method = RequestMethod.POST)
+    @RequestMapping(value = "register.do")
     @ResponseBody
     public ServerResponse<String> register(User user){
         return iUserService.register(user);
@@ -73,7 +73,7 @@ public class UserController {
      * @param type
      * @return
      */
-    @RequestMapping(value = "check_valid.do",method = RequestMethod.POST)
+    @RequestMapping(value = "check_valid.do")
     @ResponseBody
     public ServerResponse<String> checkValid(String str,String type){
         return iUserService.checkValid(str, type);
@@ -84,7 +84,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
+    @RequestMapping(value = "get_user_info.do")
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -99,7 +99,7 @@ public class UserController {
      * @param username
      * @return
      */
-    @RequestMapping(value = "forget_get_question.do",method = RequestMethod.POST)
+    @RequestMapping(value = "forget_get_question.do")
     @ResponseBody
     public ServerResponse<String> forgetGetQuestion(String username){
         return iUserService.selectQuestion(username);
@@ -112,7 +112,7 @@ public class UserController {
      * @param answer
      * @return
      */
-    @RequestMapping(value = "forget_check_answer.do",method = RequestMethod.POST)
+    @RequestMapping(value = "forget_check_answer.do")
     @ResponseBody
     public ServerResponse<String> forgetCheckAnswer(String username, String question, String answer){
         return iUserService.checkAnswer(username,question,answer);
@@ -125,7 +125,7 @@ public class UserController {
      * @param forgetToken
      * @return
      */
-    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.POST)
+    @RequestMapping(value = "forget_reset_password.do")
     @ResponseBody
     public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken){
         return iUserService.forgetResetPassword(username, passwordNew, forgetToken);
@@ -138,7 +138,7 @@ public class UserController {
      * @param passwordNew
      * @return
      */
-    @RequestMapping(value = "reset_password.do",method = RequestMethod.POST)
+    @RequestMapping(value = "reset_password.do")
     @ResponseBody
     public ServerResponse<String> resetPassword(HttpSession session, String passwordOld, String passwordNew){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -154,7 +154,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "update_information.do",method = RequestMethod.POST)
+    @RequestMapping(value = "update_information.do")
     @ResponseBody
     public ServerResponse<User> updateInformation(HttpSession session, User user){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
@@ -177,7 +177,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "get_information.do",method = RequestMethod.POST)
+    @RequestMapping(value = "get_information.do")
     @ResponseBody
     public ServerResponse<User> getInformation(HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
@@ -195,7 +195,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "login2.do",method = RequestMethod.POST)
+    @RequestMapping(value = "login2.do")
     @ResponseBody
     public ServerResponse<User> login2(String username, String password, HttpSession session, HttpServletResponse response2) {
         //service-->mybatis->dao
