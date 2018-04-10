@@ -11,3 +11,6 @@ master版本里面只是一个初始项目，什么都没有。其他版本相�
 使用restlet(chrome插件）调用，导入
 http://adsf.sevendegree.date/restlet/restlet_sevendegree.json
 然后进行测试
+
+使用的数据库的表结构可以在这个sql文件里一览
+http://adsf.sevendegree.date/data/sevendegre_tables.sql
